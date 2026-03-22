@@ -1,6 +1,13 @@
 import React from "react";
-import { User } from "../api/usersApi";
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper } from "@mui/material";
+import { User } from "../types/user";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 
 interface Props {
   users?: User[];
@@ -9,11 +16,18 @@ interface Props {
 }
 
 const UserList: React.FC<Props> = ({ users, isLoading, isError }) => {
-  if (isLoading) return <p style={{ textAlign: "center" }}>Loading users...</p>;
-  if (isError) return <p style={{ textAlign: "center", color: "red" }}>Error loading users!</p>;
+  if (isLoading)
+    return <p style={{ textAlign: "center" }}>Loading users...</p>;
+
+  if (isError)
+    return (
+      <p style={{ textAlign: "center", color: "red" }}>
+        Failed to load users
+      </p>
+    );
 
   return (
-    <Paper sx={{ width: "80%", margin: "20px auto", overflowX: "auto" }}>
+    <Paper sx={{ width: "80%", margin: "20px auto" }}>
       <Table>
         <TableHead>
           <TableRow>
@@ -22,6 +36,7 @@ const UserList: React.FC<Props> = ({ users, isLoading, isError }) => {
             <TableCell>Email</TableCell>
           </TableRow>
         </TableHead>
+
         <TableBody>
           {users?.map((user) => (
             <TableRow key={user.id}>
@@ -36,4 +51,4 @@ const UserList: React.FC<Props> = ({ users, isLoading, isError }) => {
   );
 };
 
-export default UserList;
+export default React.memo(UserList);

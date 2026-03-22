@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { User } from "../api/usersApi";
+import { User } from "../types/user";
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, TextField
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
 } from "@mui/material";
 
 interface Props {
@@ -12,18 +16,28 @@ interface Props {
   loading: boolean;
 }
 
-const AddUserModal: React.FC<Props> = ({ open, onClose, onAddUser, loading }) => {
+const AddUserModal: React.FC<Props> = ({
+  open,
+  onClose,
+  onAddUser,
+  loading,
+}) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   const handleSubmit = () => {
     if (!name || !email) return;
+
     onAddUser({ name, email });
+
+    setName("");
+    setEmail("");
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add New User</DialogTitle>
+
       <DialogContent>
         <TextField
           autoFocus
@@ -33,6 +47,7 @@ const AddUserModal: React.FC<Props> = ({ open, onClose, onAddUser, loading }) =>
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+
         <TextField
           margin="dense"
           label="Email"
@@ -42,8 +57,10 @@ const AddUserModal: React.FC<Props> = ({ open, onClose, onAddUser, loading }) =>
           onChange={(e) => setEmail(e.target.value)}
         />
       </DialogContent>
+
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
+
         <Button onClick={handleSubmit} disabled={loading}>
           {loading ? "Adding..." : "Add"}
         </Button>
